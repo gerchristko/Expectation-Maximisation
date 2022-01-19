@@ -1,0 +1,139 @@
+---
+title: "R Notebook"
+output:
+  html_notebook: default
+  pdf_document: default
+---
+
+$$
+\begin{aligned}
+Q(\theta, \theta^0) &= \sum_{i=1}^N\sum_{k=1}^K A_{i,k} \left[\text{log} \space P(X_i \mid Z_i = k, \theta) + \text{log} \space \pi_k \right]
+\\
+\\
+A_{i,k}&: \text{Posterior probability (Will be discussed later)} \\
+\space P(X_i \mid Z_i = k, \theta) &: \text{The pdf or pmf of the cluster, evaluated at} X_i. \\
+\pi_k&: \text{The probability of the cluster}
+\end{aligned}
+$$
+\
+\
+\
+
+$$
+\begin{aligned}
+A_{i,k} = P(Z_i = k \mid X_i, \theta^0) &= \frac{P(X_i \mid Z_i = k, \theta^0)\pi_k}{\sum\limits_{k'=1}^K P(X_i \mid Z_i = k', \theta^0)\pi_{k'}} \\
+\\
+\\
+\space P(X_i \mid Z_i = k, \theta^0) &: \text{The pdf or pmf of the cluster, evaluated at} X_i. \\
+\pi_k&: \text{The probability of the cluster}
+\end{aligned}
+$$
+
+\
+\
+\
+
+$$
+\begin{aligned}
+P(Z_i = 1 \mid X_i, \theta^0) &= \frac{\frac{\lambda_1^{X_i}e^{-\lambda_1}}{x!}\pi_1}{\frac{\lambda_1^{X_i}e^{-\lambda_1}}{x!}\pi_1+\frac{\lambda_2^{X_i}e^{-\lambda_2}}{x!}\pi_2} \\
+\end{aligned}
+$$
+\
+\
+\
+
+$$
+\begin{aligned}
+\hat\pi_1 &= \frac{\sum\limits_{i=1}^{N}A_{i,1}}{\sum\limits_{i=1}^{N}A_{i,1}+A_{i,2}} \\
+\hat\pi_2 &=1-\hat\pi_1 \\
+\\
+\hat\lambda_k &= \frac{\sum\limits_{i=1}^{N}A_{i,k}X_i}{\sum\limits_{i=1}^{N}A_{i,k}} \space\space\dots \text{for any cluster k}
+\end{aligned}
+$$
+
+
+\
+\
+\
+$$
+\begin{aligned}
+P(X, Z\mid\theta) & = \prod\limits_{i=1}^{N}P(X_i\mid Z_i, \theta)P(Z_i\mid\theta)\\
+\\
+P(X, Z\mid\theta) & = \prod\limits_{i=1}^{N}\prod\limits_{k = 1}^{K} [P(X_i\mid Z_i = k, \theta)P(Z_i=k\mid \theta)]^{\mathcal{I}(Z_i=k)} \\
+\\
+\log P(X, Z \mid \theta) & = \sum\limits_{i=1}^{N}\sum\limits_{k=1}^{K} \mathcal{I}(Z_i = k)[\log P(X_i\mid Z_i = k, \theta)+\log P(Z_i=k\mid\theta)] \\
+\\
+Q(\theta, \theta^0) & = \mathbb{E}_{Z\mid X,\theta^0}[\log P(X, Z\mid \theta)] \\
+&= \sum\limits_{i=1}^{N}\sum\limits_{k=1}^{K}P(Z_i=k\mid X_i, \theta^0)[\log P(X_i\mid Z_i=k, \theta) + \log P(Z_i=k\mid\theta)] \\
+\\
+Q(\theta, \theta^0) & = \sum\limits_{i=1}^{N}\sum\limits_{k=1}^{2}P(Z_i=k\mid X_i, \theta^0)\left[\log\left(\frac{\lambda_k^{X_i}e^{-\lambda_k}}{X_i!}\right)+\log\pi_k\right] \\
+\\
+Q(\theta, \theta^0)& = \sum\limits_{i=1}^{N}\sum\limits_{k=1}^{2}P(Z_i=k\mid X_i, \theta^0)\left[-\lambda_k + X_i\log(\lambda_k)-\log(X_i!)+\log\pi_k\right] \\
+\end{aligned}
+$$
+\
+\
+\
+$$
+\begin{aligned}
+P(Z_i=k\mid X_i,\theta^0) &= \frac{P(Z_i=k,X_i\mid\theta^0)}{P(X_i\mid\theta^0)} \\
+\\
+P(Z_i=k\mid X_i,\theta^0) &= \frac{P(X_i\mid Z_i=k, \theta^0)P(Z_i=k \mid \theta^0)}{\sum\limits_{k'=1}^{K}P(X_i\mid Z_i=k',\theta^0)P(Z_i = k'\mid \theta^0)} \\
+\\
+\\
+P(Z_i=k\mid X_i,\theta^0) &= \frac{\frac{\lambda_k^{X_i}e^{-\lambda_k}}{X_i!}\pi_k}
+{\frac{\lambda_1^{X_i}e^{-\lambda_1}}{X_i!}\pi_1 + \frac{\lambda_2^{X_i}e^{-\lambda_2}}{X_i!}\pi_2} \\
+
+\end{aligned}
+$$
+\
+\
+$$
+\begin{aligned}
+\text{Let } A_{i,k} = P(Z_i=k\mid X_i, \theta^0)
+\end{aligned}
+$$
+\
+\
+\
+\
+\
+$$
+\begin{aligned}
+Q(\theta, \theta^0)& \propto \sum\limits_{i=1}^{N}\sum\limits_{k=1}^{2}A_{i,k}\log\pi_k \\
+\\
+Q(\theta, \theta^0)& \propto \sum\limits_{i=1}^{N}A_{i,1}\log\pi_1 +  A_{i,2}\log(1-\pi_1) \\
+\\
+\frac{\partial Q(\theta, \theta^0)}{\partial\pi_1}& = \frac{\sum\limits_{i=1}^{N}A_{i,1}}{\pi_1} -  \frac{\sum\limits_{i=1}^{N}A_{i,2}}{1-\pi_1}\\
+\\
+0 & = \frac{\sum\limits_{i=1}^{N}A_{i,1}}{\pi_1} -  \frac{\sum\limits_{i=1}^{N}A_{i,2}}{1-\pi_1} \\
+\frac{\sum\limits_{i=1}^{N}A_{i,2}}{1-\pi_1} & = \frac{\sum\limits_{i=1}^{N}A_{i,1}}{\pi_1} \\
+\pi_1\sum\limits_{i=1}^{N}A_{i,2} &= \sum\limits_{i=1}^{N}A_{i,1} - \pi_1\sum\limits_{i=1}^{N}A_{i,1} \\
+\pi_1 &= \frac{\sum\limits_{i=1}^{N}A_{i,1}}{\sum\limits_{i=1}^{N}A_{i,1}+A_{i,2}} \\
+\end{aligned}
+$$
+\
+\
+\
+$$
+\begin{aligned}
+Q(\theta, \theta^0) &= \sum\limits_{i=1}^{300}\sum\limits_{k=1}^{2}A_{i,k}\left[-\lambda_k + X_i\log(\lambda_k)-\log(X_i!)+\log\pi_k\right] \\
+\frac{\partial Q(\theta, \theta^0)}{\partial\lambda_j} &= \sum\limits_{i=1}^{300}\left[A_{i,j}\frac{\partial}{\partial\pi_1}[-\lambda_j+X_i\log(\lambda_j)]\right] \\
+0&=\sum\limits_{i=1}^{300}A_{i,j}\left[-1+ \frac{X_i}{\lambda_j}\right] \\
+&=\frac{\sum\limits_{i=1}^{300}A_{i,j}X_i - \lambda_j\sum\limits_{i=1}^{300}A_{i,j}}{\lambda_j} \\
+\lambda_j\sum\limits_{i=1}^{300}A_{i,j} &=\sum\limits_{i=1}^{300}A_{i,j}X_i \\
+\lambda_j &= \frac{\sum\limits_{i=1}^{300}A_{i,j}X_i}{\sum\limits_{i=1}^{300}A_{i,j}}
+\end{aligned}
+$$
+\
+\
+\
+$$
+\begin{aligned}
+P(X\mid \theta) = \sum\limits_{i=1}^N\log\left[\sum\limits_{k=1}^Kf(X_i\mid Z_i = k)\pi_k\right] \\
+\\
+\end{aligned}
+$$
+\
+\
+\
